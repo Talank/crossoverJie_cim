@@ -1,16 +1,12 @@
 name: A reusable workflow to build and run the unit test suite
 
 on:
-  workflow_call:
-    secrets:
-      codecov_token:
-        required: true
   workflow_dispatch:
 
 jobs:
   build_and_test:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,3 +26,10 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+      fail-fast: false

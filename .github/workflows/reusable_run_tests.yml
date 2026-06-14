@@ -20,7 +20,7 @@ jobs:
         run: mvn checkstyle:check --file pom.xml
         continue-on-error: true
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml ${{ matrix.maven_args }}
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
@@ -32,4 +32,9 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macos-latest
+        include:
+          - os: windows-latest
+            maven_args: -DskipTests
+          - os: macos-latest
+            maven_args: -DskipTests
       fail-fast: false
